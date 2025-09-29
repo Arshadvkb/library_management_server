@@ -1,5 +1,5 @@
-express=require('express')
-const { register, login, logout } = require('../controllers/auth_controller')
+import express from 'express'
+import { register, login, logout } from '../controllers/auth_controller.js'
 
 
 const authRouter=express.Router()
@@ -7,3 +7,5 @@ const authRouter=express.Router()
 authRouter.post('/register',register)
 authRouter.post('/login',login)
 authRouter.post('/logout',logout)
+
+export default authRouter

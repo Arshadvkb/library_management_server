@@ -1,17 +1,17 @@
-const express=require('express');
-const { db } = require('./config/mongo');
-const app=express();    
-const dotenv=require('dotenv'); 
-const cors=require('cors');
-const cookieParser = require('cookie-parser');
-const authRouter=require('./routes/auth_routes.js')
+import express from 'express';
+import { db } from './config/mongo.js';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import authRouter from './routes/auth_routes.js';
+
+const app = express();
 const port=8000;
 
 app.use(express.json());
 dotenv.config();
 app.use(cors({
-    // origin: 'http://localhost:3000', // Replace with your frontend URL
-    credentials: true, // Allow cookies to be sent
+    credentials: true,
 }));
 app.use(cookieParser());
 

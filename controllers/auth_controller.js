@@ -1,35 +1,32 @@
-import userModel from '../models/userModel'
+import userModel from '../models/userModel.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-bcrypt=require('bcryptjs')
-jwt=require('jsonwebtoken')
-
-
-
-export const register=async (req,res)=>{
+const register = async (req, res) => {
     const {name,email,phone,password}=req.body
 
     if(!name || !email || !phone || !password){
         return res.json({success:false,message:'missing details'})
     }
     try {
-        const exixtingUser=await userModel.findOne({email})
-        if(exixtingUser){
-            return res.json({success:false,message:'User alredy exists'})
+        const existingUser = await userModel.findOne({ email });
+        if (existingUser) {
+            return res.json({ success: false, message: 'User already exists' });
         }
 
-        const hashedpassword=await bcrypt.hash(password,10)
-        const user=userModel({name,phone,email,password:hashedpassword})
-        await user.save
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new userModel({ name, phone, email, password: hashedPassword });
+        await user.save();
 
-        const token=jwt.sign({id:user._id}, process.env.JWT_SECRETE,{expireIn:'7d'})
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRETE, { expiresIn: '7d' });
 
-        res.cookie('tokrn',token,{
-            httpOnly:true, 
-            secured:process.env.NODE_ENV==='production',
-            sameSite:process.env.NODE_ENV==='production' ? 'none' : 'strict',
-            maxAge:7 * 24 * 60 * 60 * 1000
-        })
-        return res.json({success:true})
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+        return res.json({ success: true });
 
         } catch (error) {
         res.json({success:false,message:error.message})
@@ -37,7 +34,7 @@ export const register=async (req,res)=>{
     }
 } 
 
-export const login=async (req,res)=>{
+const login = async (req, res) => {
     const {email,password}=req.body
     if(!email || !password){
         return res.json({success:false,message:'missing details'})
@@ -53,14 +50,14 @@ export const login=async (req,res)=>{
             return res.json({success:false,message:'Invalid password'})
 
         }
-        const token=jwt.sign({id:user._id}, process.env.JWT_SECRETE,{expireIn:'7d'})
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRETE, { expiresIn: '7d' });
 
-        res.cookie('tokrn',token,{
-            httpOnly:true, 
-            secured:process.env.NODE_ENV==='production',
-            sameSite:process.env.NODE_ENV==='production' ? 'none' : 'strict',
-            maxAge:7 * 24 * 60 * 60 * 1000
-        })
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
         return res.json({success:true})
         
     } catch (error) {
@@ -69,18 +66,17 @@ export const login=async (req,res)=>{
     }
 }
 
-export const logout=async (req,res)=>{
-try {
-    res.clearCookie('token',{
-            httpOnly:true, 
-            secured:process.env.NODE_ENV==='production',
-            sameSite:process.env.NODE_ENV==='production' ? 'none' : 'strict',
-            maxAge:7 * 24 * 60 * 60 * 1000
-        })
-     return res.json({success:true,message:'Logged out'})
+const logout = async (req, res) => {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+        });
+        return res.json({ success: true, message: 'Logged out' });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
 
-    
-} catch (error) {
-    return res.json({success:false,message:error.message})
-}
-}
+module.exports = { register, login, logout };
