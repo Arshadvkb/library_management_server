@@ -19,4 +19,14 @@ import bookModel from "../models/bookModel.js";
     }
 }
 
-export {addBook}
+const viewBooks=async(req,res)=>{
+    try {
+        const books=await bookModel.find();
+        return res.json({success:true,books})
+    } catch (error) {
+        return res.json({success:false,message:error.message})      
+    }               
+}
+
+
+export {addBook ,viewBooks};
