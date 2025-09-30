@@ -21,9 +21,8 @@ app.use(cookieParser());
 app.get('/',(req,res)=>{
     res.send('library management system');
 }); 
-
 app.use('/api/auth',authRouter)
-app.use('/api/admin',adminRouter)
+app.use('/api/book',adminRouter)
 
 
 app.listen(port,()=>{
