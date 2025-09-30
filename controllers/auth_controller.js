@@ -3,9 +3,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const register = async (req, res) => {
-    const {name,email,phone,password}=req.body
+    const {name,email,phone,password,role}=req.body
 
-    if(!name || !email || !phone || !password){
+    if(!name || !email || !phone || !password || !role){
         return res.json({success:false,message:'missing details'})
     }
     try {
@@ -15,7 +15,7 @@ const register = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new userModel({ name, phone, email, password: hashedPassword });
+        const user = new userModel({ name, phone, email, password: hashedPassword ,role});
         await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRETE, { expiresIn: '7d' });
