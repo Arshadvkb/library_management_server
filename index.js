@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth_routes.js';
+import adminRouter from './routes/admin_routes.js';
 
 const app = express();
 const port=8000;
@@ -22,6 +23,7 @@ app.get('/',(req,res)=>{
 }); 
 
 app.use('/api/auth',authRouter)
+app.use('/api/admin',adminRouter)
 
 
 app.listen(port,()=>{
