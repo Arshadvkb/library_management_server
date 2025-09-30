@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth_routes.js';
-import adminRouter from './routes/admin_routes.js';
+import adminRouter from './routes/book_routes.js';
 
 const app = express();
 const port=8000;

@@ -1,5 +1,5 @@
 import express from 'express';
-import { addBook, viewBooks } from '../controllers/admin_controller.js';
+import { addBook, viewBooks } from '../controllers/book_controller.js';
 
 
 const adminRouter = express.Router();
