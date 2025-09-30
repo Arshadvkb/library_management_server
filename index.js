@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 //api endpoints
 app.get('/',(req,res)=>{
-    res.send('Hello World!');
+    res.send('library management system');
 }); 
 
 app.use('/api/auth',authRouter)
