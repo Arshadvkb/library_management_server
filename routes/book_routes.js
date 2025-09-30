@@ -8,6 +8,7 @@ const adminRouter = express.Router();
 
 adminRouter.post('/add-book', addBook);
 adminRouter.get('/view-books', viewBooks);
+adminRouter.put('/edit-book/:id');
 
 
 export default adminRouter;

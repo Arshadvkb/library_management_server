@@ -28,5 +28,8 @@ const viewBooks=async(req,res)=>{
     }               
 }
 
+const editBook=async(req,res)=>{
 
-export {addBook ,viewBooks};
+}
+
+export {addBook ,viewBooks, editBook};
