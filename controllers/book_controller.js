@@ -29,7 +29,29 @@ const viewBooks=async(req,res)=>{
 }
 
 const editBook=async(req,res)=>{
+    const {id,title,ISBN,author,publishedDate}=req.body;
+    if(!id){
+        return res.json({success:false,message:"id missing"})
+    }
+    try {
+        book=bookModel.findOne({id})
+        book.title=title
+        book.ISBN=ISBN
+        book.author=author
+        book.publishedDate=publishedDate
+        book.save()
+       
+        return res.json({success:true,message:"book updated"})
+    } catch (error) {
+         
+        return({success:false,message:error.message})
+       
+        
+        
+    }
 
 }
+
+
 
 export {addBook ,viewBooks, editBook};
