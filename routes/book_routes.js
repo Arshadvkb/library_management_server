@@ -2,13 +2,13 @@ import express from 'express';
 import { addBook, viewBooks , editBook } from '../controllers/book_controller.js';
 
 
-const adminRouter = express.Router();
+const bookRouter = express.Router();
 
 
 
-adminRouter.post('/add-book', addBook);
-adminRouter.get('/view-books', viewBooks);
-adminRouter.put('/edit-book/:id', editBook);
+bookRouter.post('/add-book', addBook);
+bookRouter.get('/view-books', viewBooks);
+bookRouter.put('/edit-book/:id', editBook);
 
 
-export default adminRouter;
+export default bookRouter;

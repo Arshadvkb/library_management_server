@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth_routes.js';
-import adminRouter from './routes/book_routes.js';
+import bookRouter from './routes/book_routes.js';
 
 const app = express();
 const port=8000;
@@ -22,7 +22,7 @@ app.get('/',(req,res)=>{
     res.send('library management system');
 }); 
 app.use('/api/auth',authRouter)
-app.use('/api/book',adminRouter)
+app.use('/api/book',bookRouter)
 
 
 app.listen(port,()=>{
