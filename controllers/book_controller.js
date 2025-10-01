@@ -48,9 +48,21 @@ const editBook=async(req,res)=>{
          
         return res.json({success:false,message:error.message})    
     }
+}
 
+const deleteBook=async(req,res)=>{
+const {id}=req.params;
+if(!id){
+    return res.json({success:false,message:"No id recieved"})
+
+}
+try {
+    const deletebook=await bookModel.findByIdAndDelete(id)
+    return res.json({success:true,message:"Book deleted successfuly"})
+} catch (error) {
+    return res.json({success:false,message:error.message}) 
+}
 }
 
 
-
-export {addBook ,viewBooks, editBook};
+export {addBook ,viewBooks, editBook,deleteBook};
