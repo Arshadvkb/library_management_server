@@ -18,6 +18,10 @@ const bookSchema=new mongoose.Schema({
         required:true,
         unique:true
     },
+    count:{
+        type:Number,
+        required:true,
+    }
 
 });
 
