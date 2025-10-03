@@ -35,6 +35,8 @@ const register = async (req, res) => {
 } 
 
 const login = async (req, res) => {
+    console.log(req.body);
+    
     const {email,password}=req.body
     if(!email || !password){
         return res.json({success:false,message:'missing details'})
@@ -58,6 +60,8 @@ const login = async (req, res) => {
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
+      
+        
         return res.json({success:true,message:'Login successful'})
         
     } catch (error) {
