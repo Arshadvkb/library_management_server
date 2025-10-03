@@ -6,11 +6,15 @@ const register = async (req, res) => {
     const {name,email,phone,password,role}=req.body
 
     if(!name || !email || !phone || !password || !role){
+        console.log("register failed");
+        
         return res.json({success:false,message:'missing details'})
     }
     try {
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
+            console.log("user already esists");
+            
             return res.json({ success: false, message: 'User already exists' });
         }
 
@@ -26,6 +30,8 @@ const register = async (req, res) => {
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
+        console.log("register succssful");
+        
         return res.json({ success: true, message: 'Registration successful' });
 
         } catch (error) {
@@ -44,6 +50,8 @@ const login = async (req, res) => {
     try {
         const user = await userModel.findOne({email})
         if(!user){
+            console.log("login failed");
+            
             return res.json({success:false,message:'Invalid email'})
         }
         const isMatch=await bcrypt.compare(password,user.password)
@@ -61,6 +69,7 @@ const login = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
       
+        console.log("login success");
         
         return res.json({success:true,message:'Login successful'})
         
