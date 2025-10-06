@@ -71,7 +71,7 @@ const login = async (req, res) => {
       
         console.log("login success");
         
-        return res.json({success:true,message:'Login successful'})
+        return res.json({success:true,message:'Login successful',user})
         
     } catch (error) {
              return res.json({success:false,message:error.message})
