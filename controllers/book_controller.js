@@ -1,5 +1,7 @@
    
 import bookModel from "../models/bookModel.js";
+import cloudinary from "../config/cloudinary.js";
+
 
  const addBook=async(req,res)=>{
     const {title,author,publishedDate,ISBN,count}=req.body;
@@ -67,4 +69,27 @@ try {
 }
 
 
-export {addBook ,viewBooks, editBook,deleteBook};
+ const fileAAAAA =  async(req, res) =>{
+  const uploadResult= await cloudinary.uploader.upload(req.file.path,{
+      resource_type: 'auto',  // Auto-detects image/video
+      folder: 'library_books',  // Organize in Cloudinary
+    });
+
+    const imageData = {
+      public_id: uploadResult.public_id,
+      secure_url: uploadResult.secure_url,
+      width: uploadResult.width,
+      height: uploadResult.height,
+      format: uploadResult.format,
+    };
+    if(uploadResult){
+        console.log("success");
+        
+        return res.json({success:true,message:imageData})
+    }
+    else{
+        return res.json({success:false,message:"no image"})
+    }
+}
+
+export {addBook ,viewBooks, editBook,deleteBook ,fileAAAAA};
