@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express';
 import { db } from './config/mongo.js';
 import cors from 'cors';
@@ -10,7 +11,7 @@ const app = express();
 const port=8000;
 
 app.use(express.json());
-dotenv.config();
+
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' ? 'http://localhost:5173' : true,  
   credentials: true,  
