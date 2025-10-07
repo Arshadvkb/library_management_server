@@ -5,17 +5,34 @@ import cloudinary from "../config/cloudinary.js";
 
  const addBook=async(req,res)=>{
     const {title,author,publishedDate,ISBN,count}=req.body;
+    // const {file}=req.file
     console.log(req.body);
+    console.log(req.file);
     
-    if(!title || !author || !publishedDate || !ISBN  || !count){
+    
+    if(!title || !author || !publishedDate || !ISBN  || !count ){
         return res.json({success:false,message:'missing details'})
     }
     try {
+         const uploadResult= await cloudinary.uploader.upload(req.file.path,{
+      resource_type: 'auto', 
+      folder: 'library_books',  
+    });
+
+     const imageData = {
+      public_id: uploadResult.public_id,
+      secure_url: uploadResult.secure_url,
+      width: uploadResult.width,
+      height: uploadResult.height,
+      format: uploadResult.format,
+    };
+    console.log(imageData);
+    
         const existingBook=await bookModel.findOne({ISBN});
         if(existingBook){
             return res.json({success:false,message:'Book with this ISBN already exists'})
         }       
-        const book=new bookModel({title,author,publishedDate,ISBN,count});
+        const book=new bookModel({title,author,publishedDate,ISBN,count,image:imageData});
         await book.save();
         return res.json({success:true,message:'Book added successfully'})
     } catch (error) {

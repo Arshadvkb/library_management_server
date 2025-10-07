@@ -11,9 +11,12 @@ const app = express();
 const port=8000;
 
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    credentials: true,
+    origin: process.env.NODE_ENV === 'production' ? 'http://localhost:5173' : true,  
+  credentials: true,  
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(cookieParser());
 
