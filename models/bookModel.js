@@ -21,6 +21,13 @@ const bookSchema=new mongoose.Schema({
     count:{
         type:Number,
         required:true,
+    },
+    image:{
+            public_id:{type:String},
+            secure_url:{type:String},
+            width:{type:Number},
+            height:{type:Number},
+            format:{type:String}
     }
 
 });
