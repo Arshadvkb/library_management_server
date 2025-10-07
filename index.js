@@ -1,6 +1,6 @@
+import dotenv from 'dotenv/config';
 import express from 'express';
 import { db } from './config/mongo.js';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth_routes.js';
@@ -10,7 +10,6 @@ const app = express();
 const port=8000;
 
 app.use(express.json());
-dotenv.config();
 app.use(cors({
     credentials: true,
 }));
