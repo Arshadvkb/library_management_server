@@ -79,6 +79,9 @@ if(!id){
 }
 try {
     const deletebook=await bookModel.findByIdAndDelete(id)
+const result = await cloudinary.uploader.destroy(deletebook.image.public_id, {
+        resource_type: 'image', 
+      });
     return res.json({success:true,message:"Book deleted successfuly"})
 } catch (error) {
     return res.json({success:false,message:error.message}) 
@@ -86,10 +89,11 @@ try {
 }
 
 
+
  const fileAAAAA =  async(req, res) =>{
   const uploadResult= await cloudinary.uploader.upload(req.file.path,{
-      resource_type: 'auto',  // Auto-detects image/video
-      folder: 'library_books',  // Organize in Cloudinary
+      resource_type: 'auto', 
+      folder: 'library_books', 
     });
 
     const imageData = {
