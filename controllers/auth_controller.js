@@ -11,6 +11,19 @@ const register = async (req, res) => {
         return res.json({success:false,message:'missing details'})
     }
     try {
+
+         const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+              resource_type: "auto",
+              folder: "library_books",
+            });
+        
+            const imageData = {
+              public_id: uploadResult.public_id,
+              secure_url: uploadResult.secure_url,
+              width: uploadResult.width,
+              height: uploadResult.height,
+              format: uploadResult.format,
+            };
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             console.log("user already esists");
@@ -19,7 +32,7 @@ const register = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new userModel({ name, phone, email, password: hashedPassword ,role});
+        const user = new userModel({ name, phone, email, password: hashedPassword ,role,image:imageData});
         await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRETE, { expiresIn: '7d' });
