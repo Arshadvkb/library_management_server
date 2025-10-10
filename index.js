@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth_routes.js';
 import bookRouter from './routes/book_routes.js';
 import cloudinary from './config/cloudinary.js';
+import adminRouter from './routes/admin_routes.js';
+import userRouter from './routes/user_routes.js';
 
 const app = express();
 const port=8000;
@@ -27,11 +29,13 @@ app.get('/',(req,res)=>{
 }); 
 app.use('/api/auth',authRouter)
 app.use('/api/book',bookRouter)
+app.use('/api/admin',adminRouter)
+app.use('/api/user',userRouter)
+
+
 
 db();
 app.listen(port,()=>{
-    console.log(`Example app listening on port ${port}`);
-    
-    
+    console.log("server running at " +`http://localhost:${port}`);   
 });
 
