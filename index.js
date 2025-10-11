@@ -21,7 +21,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(cookieParser());
-
+db();
 
 //api endpoints
 app.get('/',(req,res)=>{
@@ -34,7 +34,7 @@ app.use('/api/user',userRouter)
 
 
 
-db();
+
 app.listen(port,()=>{
     console.log("server running at " +`http://localhost:${port}`);   
 });
