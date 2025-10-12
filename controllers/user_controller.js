@@ -47,6 +47,8 @@ const return_book = async (req, res) => {
 
     rental.book.available_count += 1;
     await rental.book.save();
+
+    return res.json({ success: true, message: "book rented successfuly" });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
