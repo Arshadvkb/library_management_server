@@ -5,9 +5,9 @@ const rentBook = async (req, res) => {
   const { user_id, book_id, dueDate } = req.body;
 
   try {
-    const book = bookModel.findById(book_id);
+    const book = await bookModel.findById(book_id);
     if (!book) {
-      return res.json({ success: "false", message: "No book found" });
+      return res.json({ success: false, message: "No book found" });
     }
     if (book.available_count < 1) {
       return res.json({ success: false, message: "book not available" });
@@ -20,7 +20,7 @@ const rentBook = async (req, res) => {
         due_date: dueDate,
       });
       await rental.save();
-
+      await book.save();
       return res.json({ success: true, message: "book rented successdfuly" });
     }
   } catch (error) {
@@ -33,8 +33,8 @@ const rentBook = async (req, res) => {
 const return_book = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id=" + id);
-    const rental = await rentalModel.findById(id);
+
+    const rental = await rentalModel.findById(id).populate("book");
     if (!rental) {
       return res.json({ success: false, message: "No rental found" });
     }
@@ -48,7 +48,7 @@ const return_book = async (req, res) => {
     rental.book.available_count += 1;
     await rental.book.save();
 
-    return res.json({ success: true, message: "book rented successfuly" });
+    return res.json({ success: true, message: "Book returned successfuly" });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }

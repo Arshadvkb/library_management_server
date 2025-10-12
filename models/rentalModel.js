@@ -4,16 +4,15 @@ const rentalSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
       required: true,
     },
     book: {
-    
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Book",
+      ref: "book",
       required: true,
     },
-   
+
     rental_date: {
       type: Date,
       default: Date.now,
@@ -25,7 +24,7 @@ const rentalSchema = new mongoose.Schema(
     return_date: {
       type: Date,
     },
-   
+
     status: {
       type: String,
       enum: ["active", "returned", "overdue"],
@@ -42,8 +41,7 @@ rentalSchema.index({ user: 1 });
 rentalSchema.index({ book: 1 });
 rentalSchema.index({ due_date: 1 });
 
-const rentalModel = mongoose.models.rental || mongoose.model("rental", rentalSchema);
+const rentalModel =
+  mongoose.models.rental || mongoose.model("rental", rentalSchema);
 
-
-
-export default rentalModel
+export default rentalModel;
