@@ -13,9 +13,7 @@ const rentalSchema = new mongoose.Schema(
       ref: "Book",
       required: true,
     },
-    rented_copy_id: {
-      type: Number, 
-    },
+   
     rental_date: {
       type: Date,
       default: Date.now,
@@ -27,10 +25,7 @@ const rentalSchema = new mongoose.Schema(
     return_date: {
       type: Date,
     },
-    fine_amount: {
-      type: Number,
-      default: 0.0,
-    },
+   
     status: {
       type: String,
       enum: ["active", "returned", "overdue"],

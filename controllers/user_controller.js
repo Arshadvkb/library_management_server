@@ -1,25 +1,36 @@
 import bookModel from "../models/bookModel.js";
+import rentalModel from "../models/rentalModel.js"
+
+
 
 const rentBook= async(req,res)=>{
-    const{ISBN}=req.body
-    console.log(req.body);
+    const{user_id,book_id,dueDate}=req.body
+  
     
     try {
-         const book = await bookModel.findOne({ ISBN });
-         console.log(book);
-         
-         if (book) {
-           await bookModel.findByIdAndUpdate(book._id, { $set: { count: book.count - 1 } }, {
-             new: true,
-             runValidators: true,
-           });
-           console.log("success");
-           
-               return res.json({success:true,message:"book rented sucessfuly"})
-         }
-          console.log("failed");
-          
-            return res.json({ success: false, message:"failed to rent book" });
+
+      const book =bookModel.findById(book_id)
+      if(!book){
+         return res.json({success:'false',message:"No book found"})
+      }
+      if(book.available_count<1){
+        return res.json({success:false,message:"book not available"})
+      }
+      else{
+        book.available_count-=1
+
+        const rental=new rentalModel({
+          user:user_id,
+          book:book_id,
+          due_date:dueDate
+        })
+        await rental.save()
+
+        return res.json({success:true,message:"book rented successdfuly"})
+
+      }
+
+       
     } catch (error) {
         console.log("server error");
         

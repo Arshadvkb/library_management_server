@@ -36,7 +36,8 @@ const addBook = async (req, res) => {
       author,
       publishedDate,
       ISBN,
-      count,
+      total_count:count,
+      available_count:count,
       image: imageData,
     });
     await book.save();
