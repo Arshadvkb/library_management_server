@@ -1,25 +1,20 @@
 import mongoose from "mongoose";
 
-const rentalItemSchema = new mongoose.Schema({
-  book: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "book",
-    required: true,
-  },
-  rented_copy_id: {
-    type: Number,
-  },
-  return_date: {
-    type: Date,
-  },
-});
-
 const rentalSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    book: {
+    
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
+      required: true,
+    },
+    rented_copy_id: {
+      type: Number, 
     },
     rental_date: {
       type: Date,
@@ -29,27 +24,31 @@ const rentalSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Due date is required"],
     },
-    total_books: {
+    return_date: {
+      type: Date,
+    },
+    fine_amount: {
       type: Number,
-      default: 0,
+      default: 0.0,
     },
     status: {
       type: String,
       enum: ["active", "returned", "overdue"],
       default: "active",
     },
-    books: [rentalItemSchema],
   },
   {
     timestamps: true,
   }
 );
 
-
+// Indexes for performance
 rentalSchema.index({ user: 1 });
+rentalSchema.index({ book: 1 });
 rentalSchema.index({ due_date: 1 });
 
-const rentalModel =
-  mongoose.model.Rental || mongoose.model("Rental", rentalSchema);
+const rentalModel = mongoose.models.rental || mongoose.model("rental", rentalSchema);
 
-module.exports = rentalModel;
+
+
+export default rentalModel
