@@ -13,12 +13,4 @@ export default defineConfig([
       'no-undef': 'off',
     },
   },
-
-  {
-    extends: ['airbnb-base', 'prettier'],
-    plugins: ['prettier'],
-    rules: {
-      'prettier/prettier': 'error',
-    },
-  },
 ]);
