@@ -1,5 +1,5 @@
-import bookModel from "../models/bookModel.js";
-import cloudinary from "../config/cloudinary.js";
+import bookModel from '../models/bookModel.js';
+import cloudinary from '../config/cloudinary.js';
 
 const addBook = async (req, res) => {
   const { title, author, publishedDate, ISBN, count } = req.body;
@@ -7,12 +7,12 @@ const addBook = async (req, res) => {
   console.log(req.file);
 
   if (!title || !author || !publishedDate || !ISBN || !count) {
-    return res.json({ success: false, message: "missing details" });
+    return res.json({ success: false, message: 'missing details' });
   }
   try {
     const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-      resource_type: "auto",
-      folder: "library_books",
+      resource_type: 'auto',
+      folder: 'library_books',
     });
 
     const imageData = {
@@ -28,7 +28,7 @@ const addBook = async (req, res) => {
     if (existingBook) {
       return res.json({
         success: false,
-        message: "Book with this ISBN already exists",
+        message: 'Book with this ISBN already exists',
       });
     }
     const book = new bookModel({
@@ -36,12 +36,12 @@ const addBook = async (req, res) => {
       author,
       publishedDate,
       ISBN,
-      total_count:count,
-      available_count:count,
+      total_count: count,
+      available_count: count,
       image: imageData,
     });
     await book.save();
-    return res.json({ success: true, message: "Book added successfully" });
+    return res.json({ success: true, message: 'Book added successfully' });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
@@ -68,10 +68,10 @@ const editBook = async (req, res) => {
     );
 
     if (!book) {
-      return res.json({ success: false, message: "No book found" });
+      return res.json({ success: false, message: 'No book found' });
     }
 
-    return res.json({ success: true, message: "book updated" });
+    return res.json({ success: true, message: 'book updated' });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
@@ -80,21 +80,20 @@ const editBook = async (req, res) => {
 const deleteBook = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.json({ success: false, message: "No id recieved" });
+    return res.json({ success: false, message: 'No id recieved' });
   }
   try {
     const deletebook = await bookModel.findByIdAndDelete(id);
     const result = await cloudinary.uploader.destroy(
       deletebook.image.public_id,
       {
-        resource_type: "image",
+        resource_type: 'image',
       }
     );
-    return res.json({ success: true, message: "Book deleted successfuly" });
+    return res.json({ success: true, message: 'Book deleted successfuly' });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
 };
-
 
 export { addBook, viewBooks, editBook, deleteBook };
